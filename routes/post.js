@@ -4,11 +4,12 @@ const multer = require("multer");
 const postController = require('../controllers/postController');
 const { storage } = require('../middlewares/fileUpload');
 const auth = require("../middlewares/auth");
+const cache = require('../middlewares/cache');
 
 const uploads = multer({ storage: storage });
 
 router.post('/create-post', uploads.single("post_image"), auth, postController.createPost);
 //for a specefic User
-router.get('/get-all-posts/:aid', uploads.none(), auth, postController.getAllPosts);
+router.get('/get-all-posts/:aid', uploads.none(), cache, auth, postController.getAllPosts);
 
 module.exports = router;

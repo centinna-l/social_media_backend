@@ -1,7 +1,24 @@
 const User = require('../models/user');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
-const auth = require('../middlewares/auth');
+
+//redis connection
+const redis = require("redis");
+// const client = redis.createClient(6379);
+const client = require("../helper/redis_connections");
+
+client.on('connect', (_) => {
+    console.log("Connected");
+});
+
+client.on('err', (err) => {
+    console.log(`${err}`);
+});
+
+// const client = require("../helper/redis_connections");
+// client.on('connected', (_) => {
+//     console.log("Redis Connected")
+// });
 
 
 exports.createPost = async (req, res) => {
@@ -62,6 +79,7 @@ exports.getAllPosts = async (req, res) => {
                     "message": "Cannot locate Author"
                 });
             }
+            client.setex(author_id, 3600, JSON.stringify(user.posts));
             return res.json(user.posts)
 
         }).populate({
