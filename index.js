@@ -6,6 +6,7 @@ const PORT = 8000;
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
 const sendRequestRoutes = require("./routes/send-requests");
+const listPeopleRoutes = require("./routes/listPeople");
 
 mongoose.connect(MONGOURI, {
     useUnifiedTopology: true,
@@ -16,7 +17,7 @@ mongoose.connection.on('connected', () => {
 });
 
 mongoose.connection.on('error', () => {
-    console.log("Cannot establish connection at the moment");
+    console.log("Cannot establish connection to DB at the moment");
 });
 
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/sr', sendRequestRoutes);
+app.use('/api/people', listPeopleRoutes);
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -38,8 +40,6 @@ app.use((req, res, next) => {
         return next();
     }
 });
-
-
 
 app.get('/', (req, res) => {
     res.json({
