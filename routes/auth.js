@@ -8,6 +8,6 @@ const uploads = multer({ storage: storage });
 
 router.post('/register', uploads.single('profile_image'), authController.register);
 router.post('/login', uploads.none(), authController.login);
-router.put('/forgot-password', authController.forgotPassword);
+router.put('/forgot-password', uploads.none(), authController.forgotPassword);
 
 module.exports = router;

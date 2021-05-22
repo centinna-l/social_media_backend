@@ -60,4 +60,38 @@ exports.login = async (req, res) => {
 }
 
 
-exports.forgotPassword = async (req, res) => { }
+exports.forgotPassword = async (req, res) => {
+    const { email, password } = req.body;
+    if (!(email && password)) {
+        return res.json({
+            "message": "Please enter both the fields"
+        });
+    }
+    User.findOne({ email }, (err, user) => {
+        if (err || !user) {
+            return res.json({
+                "message": `${email} does not exist`
+            });
+        }
+        bcrypt.compare(password, user.password, (err, result) => {
+            if (result) {
+                return res.json({
+                    "message": "New Password cannot be the same as the old password"
+                });
+            }
+            bcrypt.hash(password, 10).then((hashedPassword) => {
+                User.findByIdAndUpdate({ _id: user._id }, { $set: { password: hashedPassword } }, (err, result) => {
+                    if (err || !result) {
+                        return res.json({
+                            "message": "Cannot change password"
+                        });
+                    }
+                    return res.json({
+                        "message": "Password Changed Successfully, Do Not forget it"
+                    });
+                });
+            });
+        });
+
+    });
+}
