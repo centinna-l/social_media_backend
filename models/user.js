@@ -23,9 +23,15 @@ const userSchema = mongoose.Schema({
         ref: "Post"
     }],
     followers: [
-        String
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
     ],
-    following: [String]
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }]
 });
 
 module.exports = mongoose.model("User", userSchema);
