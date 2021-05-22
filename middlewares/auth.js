@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
+const { secrete } = require("../keys");
+const User = require("../models/user");
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
     //get token from the header
     const token = req.header("x-auth-token");
     //Check if not token
@@ -10,10 +12,18 @@ module.exports = (req, res, next) => {
         });
     }
     try {
-        const decoded = jwt.verify(token, "1234567890");
+        const decoded = jwt.verify(token, secrete);
         // console.log("Decoded JWT")
         // console.log(decoded.uid)
-        req.uid = decoded.uid;
+        User.findById(decoded.uid, (err, user) => {
+            if (err || !user) {
+                return res.json({
+                    "msg": "Permission Denied - User Does Not exists"
+                })
+            }
+            req.uid = decoded.uid;
+        });
+
         next();
     } catch (error) {
         console.log(error.message);

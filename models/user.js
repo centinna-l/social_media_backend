@@ -17,7 +17,15 @@ const userSchema = mongoose.Schema({
     },
     profile_image: {
         type: String
-    }
+    },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
+    }],
+    followers: [
+        String
+    ],
+    following: [String]
 });
 
 module.exports = mongoose.model("User", userSchema);
