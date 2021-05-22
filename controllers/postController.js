@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+const auth = require('../middlewares/auth');
 
 
 exports.createPost = async (req, res) => {
@@ -43,5 +44,32 @@ exports.createPost = async (req, res) => {
                 });
             })
         });
+    });
+}
+//for only 1 ID 
+exports.getAllPosts = async (req, res) => {
+    let _id = req.uid;
+    let author_id = req.params.aid;
+    User.findById(_id, (err, huser) => {
+        if (err || !huser) {
+            return res.json({
+                "message": "Cannot Locate User - Please check if you have logged In"
+            });
+        }
+        User.findById({ _id: author_id }, (err, user) => {
+            if (err || !user) {
+                return res.json({
+                    "message": "Cannot locate Author"
+                });
+            }
+            return res.json(user.posts)
+
+        }).populate({
+            path: 'posts',
+            populate: {
+                path: 'comment'
+            }
+        });
+
     });
 }
