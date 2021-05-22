@@ -1,6 +1,6 @@
 const client = require("../helper/redis_connections");
 client.on('connect', (_) => {
-    console.log("Connected");
+    console.log("User Cache Connected");
 });
 
 client.on('err', (err) => {

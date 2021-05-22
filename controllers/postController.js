@@ -4,21 +4,15 @@ const Comment = require('../models/comment');
 
 //redis connection
 const redis = require("redis");
-// const client = redis.createClient(6379);
 const client = require("../helper/redis_connections");
 
 client.on('connect', (_) => {
-    console.log("Connected");
+    console.log("Post Controller and Redis Connected");
 });
 
 client.on('err', (err) => {
     console.log(`${err}`);
 });
-
-// const client = require("../helper/redis_connections");
-// client.on('connected', (_) => {
-//     console.log("Redis Connected")
-// });
 
 
 exports.createPost = async (req, res) => {
@@ -94,7 +88,7 @@ exports.getAllPosts = async (req, res) => {
 
 exports.getUserFeeds = async (req, res) => {
     let _id = req.uid;
-    console.log(req.params.username);
+    const username = req.params.username;
     const user = await User.findById(_id).populate({
         path: 'following',
         select: 'posts -_id',
@@ -107,6 +101,6 @@ exports.getUserFeeds = async (req, res) => {
             }
         }
     }).select('following -_id').exec();
-    // console.log(user);
+    client.setex(username, 2400, JSON.stringify(user.following));
     return res.json({ "user_feeds": user.following })
 }

@@ -2,7 +2,7 @@
 //const client = redis.createClient(6379);
 const client = require("../helper/redis_connections");
 client.on('connect', (_) => {
-    console.log("Connected");
+    console.log("Cache Connected");
 });
 
 client.on('err', (err) => {
