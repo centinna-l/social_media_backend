@@ -7,7 +7,7 @@ const { secrete } = require("../keys");
 
 exports.register = async (req, res) => {
     const { user_name, email, password } = req.body;
-    let pathToImage = req.pathname + req.filename;
+    let pathToImage = req.pathname + '/' + req.filename;
     console.log(pathToImage)
     if (!(user_name, email, password)) {
         return res.json({

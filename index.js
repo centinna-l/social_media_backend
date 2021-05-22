@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { MONGOURI } = require("./keys");
 const PORT = 8000;
 const authRoutes = require("./routes/auth");
-// const postRoutes = require("./routes/post");
+const postRoutes = require("./routes/post");
 const sendRequestRoutes = require("./routes/send-requests");
 
 mongoose.connect(MONGOURI, {
@@ -23,7 +23,7 @@ app.use(express.json());
 
 //Auth Routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/post', postRoutes);
+app.use('/api/post', postRoutes);
 app.use('/api/sr', sendRequestRoutes);
 
 app.use((req, res, next) => {

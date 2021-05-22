@@ -58,8 +58,8 @@ exports.acceptRequest = async (req, res) => {
                 "message": "User Does not exist - Token Invalid"
             });
         }
-        console.log('Sender', sender_id);
-        console.log('Reciever', _id);
+        // console.log('Sender', sender_id);
+        // console.log('Reciever', _id);
         FollowRequest.findOne({ sender_id, reciever_id: _id }, (err, follow) => {
             if (err || !follow) {
                 return res.json({
