@@ -66,7 +66,7 @@ exports.createPost = async (req, res) => {
 //for only 1 ID 
 exports.getAllPosts = async (req, res) => {
     let _id = req.uid;
-    let author_id = req.params.aid;
+    let author_id = req.params.uid;
     User.findById(_id, (err, huser) => {
         if (err || !huser) {
             return res.json({
@@ -90,4 +90,23 @@ exports.getAllPosts = async (req, res) => {
         });
 
     });
+}
+
+exports.getUserFeeds = async (req, res) => {
+    let _id = req.uid;
+    console.log(req.params.username);
+    const user = await User.findById(_id).populate({
+        path: 'following',
+        select: 'posts -_id',
+
+        populate: {
+            path: "posts",
+            populate: {
+                path: "author",
+                select: 'user_name email profile_image'
+            }
+        }
+    }).select('following -_id').exec();
+    // console.log(user);
+    return res.json({ "user_feeds": user.following })
 }
