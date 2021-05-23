@@ -105,12 +105,20 @@ exports.removeFollowing = async (req, res) => {
         User.findByIdAndUpdate(_id, { $pull: { following: following_id } }, (err, result) => {
             if (err || !result) {
                 return res.json({
-                    "message": "Cannot Remove User"
+                    "message": "Cannot Remove User - following"
                 });
             }
-            return res.json({
-                "message": "User Removed"
-            });
+            User.findByIdAndUpdate(following_id, { $pull: { followers: _id } }, (err, res) => {
+                if (err || !res) {
+                    return res.json({
+                        "message": "Cannot remove User - Follower"
+                    });
+                }
+                return res.json({
+                    "message": "User Removed"
+                });
+            })
+
         });
     });
 }

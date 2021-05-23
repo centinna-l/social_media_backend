@@ -28,7 +28,6 @@ exports.sendRequests = async (req, res) => {
         if (err || !followrequest) {
             return res.json(err);
         }
-        // console.log(followrequest);
         return res.json(followrequest);
     });
 }
@@ -70,16 +69,12 @@ exports.acceptRequest = async (req, res) => {
                 "message": "User Does not exist - Token Invalid"
             });
         }
-        // console.log('Sender', sender_id);
-        // console.log('Reciever', _id);
         FollowRequest.findOne({ sender_id, reciever_id: _id }, (err, follow) => {
             if (err || !follow) {
                 return res.json({
                     "message": "Not able to find the following Request -1"
                 });
             }
-            // console.log(follow)
-            // return res.json({ "follow": follow.sender_id })
             User.findByIdAndUpdate(_id, { $push: { followers: follow.sender_id } }, (err, user) => {
                 if (err || !user) {
                     console.log('User', user)

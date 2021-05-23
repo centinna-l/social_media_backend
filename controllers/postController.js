@@ -101,6 +101,11 @@ exports.getUserFeeds = async (req, res) => {
             }
         }
     }).select('following -_id').exec();
+    if (!user) {
+        return res.json({
+            "message": "Cannot Locate User - Check if your Logged In"
+        });
+    }
     client.setex(username, 2400, JSON.stringify(user.following));
     return res.json({ "user_feeds": user.following })
 }
