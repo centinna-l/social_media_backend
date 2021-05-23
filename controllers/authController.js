@@ -48,7 +48,6 @@ exports.login = async (req, res) => {
                 "message": "Cannot find user account associated with this email"
             })
         }
-        console.log(user._id)
         bcrypt.compare(password, user.password, (err, result) => {
             if (err || !result) {
                 return res.json({ err });

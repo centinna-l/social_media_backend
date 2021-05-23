@@ -57,9 +57,17 @@ exports.removeFollower = async (req, res) => {
                     "message": "Cannot Remove User"
                 });
             }
-            return res.json({
-                "message": "User Removed Sucessfully"
+            User.findByIdAndDelete(follower_id, { $pull: { following: _id } }, (err, result) => {
+                if (err || !result) {
+                    return res.json({
+                        "message": "Cannot Remove User from their following list"
+                    });
+                }
+                return res.json({
+                    "message": "User Removed Sucessfully"
+                });
             });
+
         });
     });
 }
