@@ -23,4 +23,6 @@ client.on('err', (err) => {
     console.log(`${err}`);
 });
 
+console.log("something")
+
 console.log(client)

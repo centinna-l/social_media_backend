@@ -11,4 +11,4 @@
 - Redis - sudo service redis-server start (Default Port - 6379)
 - Playground folder with legacy code.
 - dev dependencies - nodemon
-- [API Documentation]()
+- [API Documentation](https://documenter.getpostman.com/view/6244901/TzXtKM75)
