@@ -45,10 +45,18 @@ exports.removeFollower = async (req, res) => {
             "message": "You cannot remove yourself"
         });
     }
-    User.findById(_id, (err, user) => {
+    User.findById(_id, async (err, user) => {
         if (err || !user) {
             return res.json({
                 "message": "Cannot locate User / Token Invalid"
+            });
+        }
+        let check = await User.findOne({ _id }).select('followers -_id').exec();
+        let temp_id = JSON.stringify(check.followers[0]);
+        let temp1_id = JSON.stringify(follower_id);
+        if (!(temp1_id === temp_id)) {
+            return res.json({
+                "message": "User Not found in Following list"
             });
         }
         User.findByIdAndUpdate(_id, { $pull: { followers: follower_id } }, (err, result) => {

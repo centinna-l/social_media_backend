@@ -7,6 +7,8 @@ const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
 const sendRequestRoutes = require("./routes/send-requests");
 const listPeopleRoutes = require("./routes/listPeople");
+//Socket Routes for Push Notifications
+const socketRoutes = require("./routes/socket");
 
 mongoose.connect(MONGOURI, {
     useUnifiedTopology: true,
@@ -27,6 +29,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/sr', sendRequestRoutes);
 app.use('/api/people', listPeopleRoutes);
+//Socket Route for Emitting Notifications
+app.use('/api/sockets', socketRoutes);
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -50,3 +54,8 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Running on Port:${PORT}`);
 });
+
+
+
+
+
