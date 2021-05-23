@@ -8,3 +8,7 @@
 # Environment
 - Operating System - Windows 10
 - Code Env - Windows Subsystem for Linux (WSL) - 2
+- Redis - sudo service redis-server start (Default Port - 6379)
+- Playground folder with legacy code.
+- dev dependencies - nodemon
+- [API Documentation]()

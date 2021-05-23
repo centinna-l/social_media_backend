@@ -7,10 +7,22 @@ exports.sendRequests = async (req, res) => {
     let reciever_id = req.params.pfid;
     console.log(_id);
     console.log(reciever_id);
+    let current_user = await User.findById(_id).exec();
+    if (!current_user) {
+        return res.json({
+            "message": "Cannot locate current user - Invalid Authorisation"
+        });
+    }
     let data = {
         sender_id: _id,
         reciever_id
     };
+    let user = await User.findById(reciever_id).exec();
+    if (!user) {
+        return res.json({
+            "message": "Cannot Locate User"
+        });
+    }
     const sendRequest = new FollowRequest(data);
     sendRequest.save((err, followrequest) => {
         if (err || !followrequest) {
@@ -26,7 +38,7 @@ exports.search = async (req, res) => {
     let _id = req.uid;
     console.log("ID", _id)
     const { user_name } = req.body;
-    User.findOne({ user_name }, (err, user) => {
+    User.findOne({ user_name: { $regex: user_name } }, (err, user) => {
         if (err || !user) {
             return res.json({ 'message': 'Not able to Locate User' })
         }

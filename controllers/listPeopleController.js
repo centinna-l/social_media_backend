@@ -56,7 +56,7 @@ exports.removeFollower = async (req, res) => {
         let temp1_id = JSON.stringify(follower_id);
         if (!(temp1_id === temp_id)) {
             return res.json({
-                "message": "User Not found in Following list"
+                "message": "User Not found in Follower list"
             });
         }
         User.findByIdAndUpdate(_id, { $pull: { followers: follower_id } }, (err, result) => {
@@ -65,7 +65,7 @@ exports.removeFollower = async (req, res) => {
                     "message": "Cannot Remove User"
                 });
             }
-            User.findByIdAndDelete(follower_id, { $pull: { following: _id } }, (err, result) => {
+            User.findByIdAndUpdate(follower_id, { $pull: { following: _id } }, (err, result) => {
                 if (err || !result) {
                     return res.json({
                         "message": "Cannot Remove User from their following list"
